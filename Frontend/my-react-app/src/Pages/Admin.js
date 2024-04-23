@@ -355,15 +355,16 @@ function Admin()
     setModifiedUsers({}); // Módosítások törlése az állapotból
   };
 
-  const handleCheckboxChange = (userId) => {
-  const selectedIndex = selectedUsers.indexOf(userId);
-  if (selectedIndex === -1) {
-    setSelectedUsers([...selectedUsers, userId]); // Ha nincs még kiválasztva, hozzáadja a tömbhöz
-  } else {
-    const updatedUsers = [...selectedUsers];
-    updatedUsers.splice(selectedIndex, 1); // Kiválasztás megszüntetése
-    setSelectedUsers(updatedUsers);
-  }
+  const handleCheckboxChange = (e,index) => {
+    const userId = users[index].id;
+    const selectedIndex = selectedUsers.indexOf(userId);
+    if (selectedIndex === -1) {
+      setSelectedUsers([...selectedUsers, userId]); // Ha nincs még kiválasztva, hozzáadja a tömbhöz
+    } else {
+      const updatedUsers = [...selectedUsers];
+      updatedUsers.splice(selectedIndex, 1); // Kiválasztás megszüntetése
+      setSelectedUsers(updatedUsers);
+    }
   };
 
   const handleDeleteSelectedUsers = async () => {
@@ -384,7 +385,7 @@ function Admin()
       console.log('A kiválasztott felhasználók sikeresen törölve lettek.');
     } catch (error) {
       console.error('Hiba történt a törlés során:', error);
-      // Kezelhetjük a hibát a megfelelő módon
+      
     }
   };
   
@@ -935,7 +936,13 @@ function Admin()
               )
               .map((user, index) => (
                 <tr key={index}>
-                  <td>{index + 1}</td>
+                  <td>{index + 1}  
+                  <input
+                  type='checkbox'
+                  value={user.id}
+                  onChange={(e) => handleCheckboxChange(e, index)}
+                  />
+                  </td>
                   <td onClick={() => setEditingIndex(index)}>{user.id}</td>
                   <td onClick={() => setEditingIndex(index)}>
                     {editingIndex === index ? (
